@@ -1,5 +1,5 @@
 export type address ={
-public:String;
+public:string;
 }
 export const defaultAddress: address={
     public:'0x00'
