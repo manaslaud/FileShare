@@ -30,10 +30,11 @@ export default function Home() {
       Upload.abi,
       signer)
       setContract(contract)
+      console.log(contract)
       setProvider(signer)
   }
   
-    provider && wallet();
+    wallet();
   },[])
 
   return (
