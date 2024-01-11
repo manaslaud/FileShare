@@ -1,6 +1,8 @@
 {
   "dependencies": {
-    "hardhat": "^2.19.4"
+    "ethers": "^6.9.2",
+    "hardhat": "^2.19.4",
+    "metamask": "^0.0.1-security"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^4.0.0"
