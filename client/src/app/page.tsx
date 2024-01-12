@@ -14,6 +14,15 @@ export default function Home() {
   const [contract,setContract]=useState<Contract>()
   const [modal,setModalOpen]=useState<boolean>(false)
   useEffect(()=>{
+    if(!window.ethereum){
+      alert('Need ethereum support')
+    }
+    else{
+      if(!window.ethereum.isMetaMask){
+        alert('Need metamask support')
+
+      }
+    }
     const wallet=async ()=>{ 
       const provider = new ethers.BrowserProvider(window.ethereum);
       if(!provider){
