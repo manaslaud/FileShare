@@ -1,10 +1,10 @@
 'use client'
-import styles from './page.module.css'
 import { Contract, ethers, Signer } from "ethers";
 import { useState,useEffect } from 'react';
 import {address, defaultAddress} from "./types"
 import Upload from '../artifacts/contracts/Upload.sol/Upload.json'
-
+import FileUpload from "./components/FileUpload";
+import Display from "./components/Display";
 export default function Home() {
 
   const [account,setAccount]=useState<address | null >(defaultAddress)
@@ -38,8 +38,18 @@ export default function Home() {
   },[])
 
   return (
-    <main className={styles.main}>
-     
-    </main>
+    <div className='App'>
+      <h1 style={{color:'white'}}>
+        Gdrive 3.0
+      </h1>
+      <div className='bg'></div>
+      <div className='bg bg2'></div>
+      <div className='bg bg3'></div>
+      <p style={{color:'white'}}>
+        Account not connected
+      </p>
+    <FileUpload></FileUpload>
+    <Display></Display>
+    </div>
   )
 }
