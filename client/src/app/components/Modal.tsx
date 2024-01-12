@@ -1,8 +1,27 @@
+'use client'
 import { ModalProps } from "../types";
+import { useEffect,useState } from "react";
 import "./Modal.css"
  const Modal: React.FC<ModalProps>=({setModalOpen,contract})=> {
-  const sharing =async()=>{
+  const [sharedWithAccounts,setSharedWithAccounts]=useState<string[]>([]);
 
+  useEffect(()=>{
+    //runs once when component is rendered
+    const accessList=async ()=>{
+      const addressList= await contract?.shareAccess();
+      console.log(addressList)
+      setSharedWithAccounts(addressList);
+    }
+    if(contract)
+    accessList()
+  },[])
+  const sharing =async()=>{
+    const address=(document.querySelector(".address") as HTMLInputElement).value;
+    if(address){
+      await contract?.allow(address);
+      setModalOpen(false);
+    }
+    
   }
     return (
       <>
@@ -13,14 +32,25 @@ import "./Modal.css"
             <input
               type="text"
               className="address"
-              placeholder="Enter Address"
+              placeholder="Enter Address to share with"
             ></input>
           </div>
-          <form id="myForm">
-            <select id="selectNumber">
-              <option className="address">People With Access</option>
-            </select>
-          </form>
+          
+
+            <ul style={{
+                color:'black',
+                listStyle:'none'
+              }} >
+              <li >Accounts with access</li>
+            {sharedWithAccounts && (sharedWithAccounts.map((account:any,index:number)=>(
+              <li key={index} style={{
+                fontStyle:'italic'
+              }} > 
+                {account}
+              </li>
+            )))}
+            </ul>
+         
           <div className="footer">
             <button
               onClick={() => {

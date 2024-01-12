@@ -8,7 +8,7 @@ import FileUpload from "./components/FileUpload";
 import Modal from "./components/Modal";
 import Display from "./components/Display";
 export default function Home() {
-
+//todo: file format check while displaying it, add disallow functionality
   const [account,setAccount]=useState<address | null >(defaultAddress)
   const [provider,setProvider]=useState<Signer>()
   const [contract,setContract]=useState<Contract>()

@@ -38,8 +38,8 @@ import { Props } from "../types"
         })
         
         const ImgHash = `https://gateway.pinata.cloud/ipfs/${resFile?.data.IpfsHash}`; 
-        contract?.add(account?.public,ImgHash)
-        alert("Image uploaded")
+        await contract?.add(account?.public,ImgHash)
+        alert("File uploaded")
         setFileName("None selected")
       }catch(e:any){
         alert(e);
@@ -51,7 +51,7 @@ import { Props } from "../types"
       <div className="top">
       <form className="form" onSubmit={handleSubmit}>
         <label htmlFor="file-upload" className="choose">
-          Choose Image
+          Choose File
         </label>
         <input
           disabled={!account?.public}
@@ -60,7 +60,7 @@ import { Props } from "../types"
           name="data"
           onChange={retrieveFile}
         />
-        <span className="textArea">Image: {fileName}</span>
+        <span className="textArea">File: {fileName}</span>
         <button type="submit" className="upload" disabled={!file}>
           Upload File
         </button>
