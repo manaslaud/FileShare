@@ -51,7 +51,7 @@ const Display:React.FC<Props>=({account,contract})=> {
         placeholder="Enter Address"
         className="address"
       ></input>
-      <button className="center button" onClick={getData}>
+      <button className="center button" onClick={getData} disabled={!account?.public}>
         Get Data
       </button>
     </>

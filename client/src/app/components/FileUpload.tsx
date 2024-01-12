@@ -59,7 +59,7 @@ contract:Contract | undefined
           Choose Image
         </label>
         <input
-          disabled={!account}
+          disabled={!account?.public}
           type="file"
           id="file-upload"
           name="data"
