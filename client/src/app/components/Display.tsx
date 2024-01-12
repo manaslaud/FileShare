@@ -1,12 +1,7 @@
 import "./Display.css"
-import { address } from "../types"
-import { Contract } from "ethers"
 import Image from "next/image"
 import { ReactNode, useState } from "react"
-interface Props{
-  account:address | null,
-  contract:Contract | undefined
-  }
+import { Props } from "../types"
 
 const Display:React.FC<Props>=({account,contract})=> {
   const [data,setData]=useState<ReactNode[]>([]);

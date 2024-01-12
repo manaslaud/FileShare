@@ -1,15 +1,8 @@
-import { SetStateAction } from "react";
+import { ModalProps } from "../types";
 import "./Modal.css"
-import { Contract } from "ethers";
-import { Dispatch } from "react";
-interface ModalProps{
-  setModalOpen: Dispatch<SetStateAction<boolean>>;
-  contract:Contract | undefined
-}
-
  const Modal: React.FC<ModalProps>=({setModalOpen,contract})=> {
   const sharing =async()=>{
-    
+
   }
     return (
       <>

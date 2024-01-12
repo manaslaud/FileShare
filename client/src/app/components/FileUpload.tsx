@@ -1,13 +1,8 @@
 import "./FileUpload.css"
-import { address } from "../types"
-import { Contract } from "ethers"
 import { useState } from "react"
 import axios from "axios"
+import { Props } from "../types"
 
-interface Props{
-account:address | null,
-contract:Contract | undefined
-}
  const FileUpload:React.FC<Props> = ({account,contract})=> {
   const [file,setFile]=useState<File>();
   const [fileName,setFileName]=useState<string | undefined>("file");
