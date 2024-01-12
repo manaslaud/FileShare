@@ -1,5 +1,16 @@
+import { SetStateAction } from "react";
 import "./Modal.css"
-export default function Modal() {
+import { Contract } from "ethers";
+import { Dispatch } from "react";
+interface ModalProps{
+  setModalOpen: Dispatch<SetStateAction<boolean>>;
+  contract:Contract | undefined
+}
+
+ const Modal: React.FC<ModalProps>=({setModalOpen,contract})=> {
+  const sharing =async()=>{
+    
+  }
     return (
       <>
        <div className="modalBackground">
@@ -33,3 +44,5 @@ export default function Modal() {
     </>
     )
   }
+
+  export default Modal;

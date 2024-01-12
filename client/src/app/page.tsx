@@ -1,9 +1,11 @@
 'use client'
+import "./globals.css";
 import { Contract, ethers, Signer } from "ethers";
 import { useState,useEffect } from 'react';
 import {address, defaultAddress} from "./types"
 import Upload from '../artifacts/contracts/Upload.sol/Upload.json'
 import FileUpload from "./components/FileUpload";
+import Modal from "./components/Modal";
 import Display from "./components/Display";
 export default function Home() {
 
@@ -17,8 +19,21 @@ export default function Home() {
       if(!provider){
         alert('Metamask not installed, install and setup from chrome extensions')    
     }
-    await provider.send("eth_requestAccounts",[]);
+    await provider.send("eth_requestAccounts",[]).then((obj:any)=>{
+      console.log(obj)
+    }).catch((e:any)=>{
+      console.log(e)
+    });
+    //////////
+    window.ethereum.on("accountsChanged",()=>{
+      window.location.reload();
+    })
+    window.ethereum.on("chainChanged",()=>{
+      window.location.reload();
+    })
+    /////////
     const signer= await provider.getSigner()
+    console.log(signer)
     const addr:address = {
       public:await signer.getAddress()
     }
@@ -38,6 +53,19 @@ export default function Home() {
   },[])
 
   return (
+    <>
+    {!modal && (
+      <button className="share" onClick={()=>{
+        setModalOpen(true);
+      }}>
+        Share
+      </button>
+    )}
+    {
+      modal && (
+        <Modal contract={contract} setModalOpen={setModalOpen}/>
+      )
+    }
     <div className='App'>
       <h1 style={{color:'white'}}>
         Gdrive 3.0
@@ -46,10 +74,11 @@ export default function Home() {
       <div className='bg bg2'></div>
       <div className='bg bg3'></div>
       <p style={{color:'white'}}>
-        Account not connected
+        {account?.public?account.public:'Not connected'}
       </p>
-    <FileUpload></FileUpload>
-    <Display></Display>
+    <FileUpload account={account} contract={contract} ></FileUpload>
+    <Display account={account} contract={contract}></Display>
     </div>
+    </>
   )
-}
+  }
