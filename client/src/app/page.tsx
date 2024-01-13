@@ -48,7 +48,7 @@ export default function Home() {
     }
     setAccount(addr)
     const contractAddress:address = {
-      public:'0x5FbDB2315678afecb367f032d93F642f64180aa3'
+      public:'0x3a94353582Bf34810fa769C9897BBCfFEc71aa23'
     }
     const contract= new ethers.Contract(contractAddress.public,
       Upload.abi,
