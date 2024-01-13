@@ -2,6 +2,7 @@ import "./Display.css"
 import Image from "next/image"
 import { ReactNode, useState } from "react"
 import { Props } from "../types"
+import {toast} from "react-toastify"
 
 const Display:React.FC<Props>=({account,contract})=> {
   const [data,setData]=useState<ReactNode[]>([]);
@@ -10,18 +11,18 @@ const Display:React.FC<Props>=({account,contract})=> {
     let dataArray;
     const otherAddress=(document.querySelector(".address") as HTMLInputElement).value;
 
-
+    let loading= toast.loading(`Loading images...`);;
     try{
       if(otherAddress){
         dataArray=await contract?.display(otherAddress);
-        alert(`${otherAddress} is sharing these images with you`)
+        toast.update(loading,{ render: " ✅ Shared images", type: "success", isLoading: false,draggableDirection:'x', closeOnClick:true })
       }
       else{
         dataArray=await contract?.display(account?.public);
-        alert("Showing your images")
+        toast.update(loading,{ render: " ✅ Your images", type: "success", isLoading: false,draggableDirection:'x', closeOnClick:true })
       }
     }catch(e:any){
-      alert(e);
+      toast.update(loading,{ render: " 🔴 Something went wrong", type: "error", isLoading: false,draggableDirection:'x', closeOnClick:true })
     }
     const isEmpty:boolean= Object.keys(dataArray).length===0;
     if(!isEmpty){
@@ -35,7 +36,7 @@ const Display:React.FC<Props>=({account,contract})=> {
       setData(images);
     }
     else{
-      alert("No images to display");
+toast.warn('No images to display');
     }
   }
   return (

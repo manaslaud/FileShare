@@ -2,6 +2,7 @@ import "./FileUpload.css"
 import { useState } from "react"
 import axios from "axios"
 import { Props } from "../types"
+import {toast} from "react-toastify"
 
  const FileUpload:React.FC<Props> = ({account,contract})=> {
   const [file,setFile]=useState<File>();
@@ -11,10 +12,15 @@ import { Props } from "../types"
     const data: File | null = target.files ? target.files[0] : null; 
     if (data) {
       const reader = new window.FileReader();
-      reader.readAsArrayBuffer(data);
-      reader.onloadend=()=>{
-        setFile(data);
+      try{
+        reader.readAsArrayBuffer(data);
+        reader.onloadend=()=>{
+          setFile(data);
+        }
+      }catch(e:any){
+        toast.warn('Error reading file.')
       }
+      
     }
     setFileName(data?.name);
     event.preventDefault();
@@ -23,6 +29,7 @@ import { Props } from "../types"
   const handleSubmit=async (event:any)=>{
     event.preventDefault();
     if(file){
+      let upload= toast.loading(`Uploading file...`);
       try{
         const formData=new FormData();
         formData.append("file",file);
@@ -36,13 +43,14 @@ import { Props } from "../types"
             "Content-Type":"multipart/form-data"
           }
         })
-        
+        // toast.update(upload,{ render: " ✅ File Uploaded", type: "success", isLoading: false,draggableDirection:'x', closeOnClick:true })
+
         const ImgHash = `https://gateway.pinata.cloud/ipfs/${resFile?.data.IpfsHash}`; 
         await contract?.add(account?.public,ImgHash)
-        alert("File uploaded")
+        toast.update(upload,{ render: " ✅ Transaction Completed", type: "success", isLoading: false,draggableDirection:'x', closeOnClick:true })
         setFileName("None selected")
       }catch(e:any){
-        alert(e);
+        toast.update(upload,{ render: " 🔴 Something went wrong", type: "error", isLoading: false,draggableDirection:'x',closeOnClick:true })
         console.log(e)
       }
     }

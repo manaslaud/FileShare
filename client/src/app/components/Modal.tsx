@@ -2,9 +2,9 @@
 import { ModalProps } from "../types";
 import { useEffect,useState } from "react";
 import "./Modal.css"
+import {toast} from "react-toastify"
  const Modal: React.FC<ModalProps>=({setModalOpen,contract})=> {
   const [sharedWithAccounts,setSharedWithAccounts]=useState<string[]>([]);
-
   useEffect(()=>{
     //runs once when component is rendered
     const accessList=async ()=>{
@@ -18,10 +18,29 @@ import "./Modal.css"
   const sharing =async()=>{
     const address=(document.querySelector(".address") as HTMLInputElement).value;
     if(address){
-      await contract?.allow(address);
+      let txn= toast.loading(`Transaction pending...`);
+     try{
+      const allowTransaction= await contract?.allow(address);
+      toast.update(txn,{ render: " ✅ All is good", type: "success", isLoading: false,draggableDirection:'x', closeOnClick:true })
+     }catch(e:any){
+      toast.update(txn,{ render: " 🔴 Something went wrong", type: "error", isLoading: false,draggableDirection:'x',closeOnClick:true })
+     }
       setModalOpen(false);
     }
     
+  }
+  const removeSharing=async()=>{
+    const address=(document.querySelector(".address") as HTMLInputElement).value;
+    if(address){
+      let txn= toast.loading(`Transaction pending...`);
+      try{
+        const allowTransaction=await contract?.disallow(address);
+        toast.update(txn,{ render: " ✅ All is good", type: "success", isLoading: false,draggableDirection:'x', closeOnClick:true });
+      }catch(e:any){
+        toast.update(txn,{ render: " 🔴 Something went wrong", type: "error", isLoading: false,draggableDirection:'x',closeOnClick:true })
+      }
+      setModalOpen(false);
+    }
   }
     return (
       <>
@@ -32,7 +51,7 @@ import "./Modal.css"
             <input
               type="text"
               className="address"
-              placeholder="Enter Address to share with"
+              placeholder="Enter Address"
             ></input>
           </div>
           
@@ -43,11 +62,13 @@ import "./Modal.css"
               }} >
               <li >Accounts with access</li>
             {sharedWithAccounts && (sharedWithAccounts.map((account:any,index:number)=>(
-              <li key={index} style={{
-                fontStyle:'italic'
-              }} > 
-                {account}
-              </li>
+             account[1]?( <li key={index} style={{
+              fontStyle:'italic'
+            }} onClick={(e:any)=>{
+
+            }}> 
+              {account[0]}
+            </li>):''
             )))}
             </ul>
          
@@ -61,6 +82,7 @@ import "./Modal.css"
               Cancel
             </button>
             <button onClick={() => sharing()}>Share</button>
+            <button onClick={() => removeSharing()}>Unshare</button>
           </div>
         </div>
       </div>
