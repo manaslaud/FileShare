@@ -6,6 +6,18 @@ import {toast} from "react-toastify"
 
 const Display:React.FC<Props>=({account,contract})=> {
   const [data,setData]=useState<ReactNode[]>([]);
+  async function checkFileType(url:string){
+     
+    const res = await fetch(url);
+    const buff = await res.blob();
+   
+    if(buff.type.startsWith('image/'))
+    return 0;
+    if(buff.type.startsWith('video/'))
+    return 1;
+    return -1;
+
+}
 
   const getData=async ()=>{
     let dataArray;
@@ -26,13 +38,35 @@ const Display:React.FC<Props>=({account,contract})=> {
     }
     const isEmpty:boolean= Object.keys(dataArray).length===0;
     if(!isEmpty){
-      const images=dataArray.map((item:any,i:number)=>{
+      const images = await Promise.all(dataArray.map(async (item:string, i:number) => {
+        const value = await checkFileType(item);
+        console.log(value);
+      
+        if (value===0) {
+          return (
+            <a href={item} key={i} target="_blank" rel="noopener noreferrer">
+              <Image width={200} height={200} key={i} src={item} alt="Image" className="image-list"/>
+            </a>
+          );
+        }
+      
+       else if(value===1){
         return (
-          <a href={item} key={i} target="_blank" rel="noopener noreferrer">
-            <Image width={200} height={200} key={i} src={item} alt="Image" className="image-list"/>
-          </a>       
-        )
-      })
+          <a href={item} className="image-lista" key={i}>
+            Video
+            Click Here to download 
+          </a>
+        );
+       }
+       else{
+        return (
+          <a href={item} className="image-lista" key={i}>
+            File
+            Click Here to download 
+          </a>
+        );
+       }
+      }));
       setData(images);
     }
     else{

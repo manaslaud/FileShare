@@ -7,6 +7,12 @@ import {toast} from "react-toastify"
  const FileUpload:React.FC<Props> = ({account,contract})=> {
   const [file,setFile]=useState<File>();
   const [fileName,setFileName]=useState<string | undefined>("file");
+  const getFileExtension=(filename:string | undefined)=>{
+    if(filename)
+    return filename.substring(filename.lastIndexOf('.')+1, filename.length) || filename;
+
+  }
+
   const retrieveFile = (event: any) => {
     const target = event.target as HTMLInputElement;
     const data: File | null = target.files ? target.files[0] : null; 
@@ -23,6 +29,7 @@ import {toast} from "react-toastify"
       
     }
     setFileName(data?.name);
+    console.log(getFileExtension(data?.name))
     event.preventDefault();
   };
   

@@ -9,7 +9,14 @@
   
   .image-list img {
     width: 250px;
-    height: 350px;
+    height: 250px;
+    font-size: 2rem;
+  }
+  .image-lista {
+    width: 250px;
+    height: 250px;
+    font-size: 2rem;
+    background-color: black;
   }
   .center {
     margin: 40px;
